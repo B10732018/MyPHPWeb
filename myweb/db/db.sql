@@ -6,6 +6,7 @@ CREATE TABLE `users` (
   `username` varchar(64) NOT NULL,
   `password` varchar(64) NOT NULL,
   `admin` int(11),
+  `unlocktime` DATETIME,
   `img` varchar(64),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
