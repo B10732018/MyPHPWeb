@@ -9,29 +9,30 @@ services:
             - ./log:/var/log/apache2/
         links:
             - db
-    #     networks:
-    #         - default
+        networks:
+            - default
         hostname: demo.b10732018.works
     db:
         image: mysql:5.7
         environment:
             MYSQL_DATABASE: myDb
-            MYSQL_USER: user
-            MYSQL_PASSWORD: PSD_ntust_B10732018
-            MYSQL_ROOT_PASSWORD: PSD_ntust_B10732018_ROOT
+            MYSQL_USER: userB10732018
+            MYSQL_PASSWORD: PnStDB10u732s018t
+            MYSQL_ROOT_PASSWORD: ROPnStDB10u732s018tOT
         volumes:
             - ./db:/docker-entrypoint-initdb.d
-    #     networks:
-    #         - default
-    #     hostname: test.fei.works
+        networks:
+            - default
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         links: 
             - db:db
         ports:
             - 8082:80
+        networks:
+            - default
         hostname: demo.b10732018.works
         environment:
-            MYSQL_USER: user
-            MYSQL_PASSWORD: PSD_ntust_B10732018
-            MYSQL_ROOT_PASSWORD: PSD_ntust_B10732018_ROOT
+            MYSQL_USER: userB10732018
+            MYSQL_PASSWORD: PnStDB10u732s018t
+            MYSQL_ROOT_PASSWORD: ROPnStDB10u732s018tOT
