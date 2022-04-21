@@ -6,7 +6,24 @@ if($_COOKIE['username'] && $_COOKIE['password'] && $_COOKIE['id']){
         $password = $_COOKIE['password'];
         $id = $_COOKIE['id'];
 
-        require_once('config.php');
+        include('config.php');
+        $stmt = $link->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        mysqli_close($link);
+        $row = mysqli_fetch_array($result);
+        if($row['unlocktime']){
+            $date=new DateTime();
+            $second=strtotime($row['unlocktime']) - strtotime($date->format('Y-m-d H:i:s'));
+            if( $second > 0 ){
+                echo '請'.$second.'秒後再試<br>';
+                $login=false;
+                exit;
+            }
+        }
+
+        include('config.php');
         $stmt = $link->prepare("SELECT * FROM users WHERE username = ? and password = ? and id = ?");
         $stmt->bind_param("ssi", $username, $password, $id);
         $stmt->execute();
@@ -16,6 +33,13 @@ if($_COOKIE['username'] && $_COOKIE['password'] && $_COOKIE['id']){
             $row = mysqli_fetch_array($result);   
             if(!$row ){
                 $login=false;
+
+                include('config.php');
+                $stmt = $link->prepare("UPDATE users SET unlocktime = date_add(now(), interval 10 second) WHERE username = ?");
+                $stmt->bind_param("s", $username);
+                $stmt->execute();
+                mysqli_close($link);
+
                 header("Location: index.php");
             }
             else{
