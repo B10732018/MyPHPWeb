@@ -9,7 +9,7 @@ if($login){
     $result = $stmt->get_result();
     mysqli_close($link);
     $row = mysqli_fetch_array($result);
-    echo "<h1 style='font-size:50px'>".str_replace(">","&gt",str_replace("<","&lt",$row['head']))."</h1>";
+    echo "<h1 style='font-size:50px'>".str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$row['head'])))."</h1>";
 
     include('config.php');
     $stmt = $link->prepare("SELECT img,admin FROM users WHERE username = ? and password = ?");
@@ -19,9 +19,9 @@ if($login){
     mysqli_close($link);
     $row = mysqli_fetch_array($result);
 
-    echo "<h1><img src='".str_replace(">","&gt",str_replace("<","&lt",$row['img']))."' style='height: 50px; '>";
+    echo "<h1><img src='".str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$row['img'])))."' style='height: 50px; '>";
 
-    echo ' Hi '.str_replace(">","&gt",str_replace("<","&lt",$_COOKIE['username']));
+    echo ' Hi '.str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$_COOKIE['username'])));
     echo '<button onclick="uploadimg()"> 上傳圖片 </button>';
     if($row['admin']==1){
         echo '<button onclick="adminpage()"> 管理頁面 </button>';
