@@ -21,7 +21,7 @@ if($login){
 
         $extension = pathinfo($url, PATHINFO_EXTENSION);
         if(preg_match('/^(jpg|jpeg|png|gif|bmp)$/i',$extension,$matches)){
-            if(strpos($url,'http',0)===0){
+            if(stripos($url,'http',0)===0){
                 download($url);
             }
             else{
@@ -49,11 +49,13 @@ function download($url, $path = './images/')
     
         $img=curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        echo $type;
         curl_close($ch);
     
         if($httpcode=='200'){
             $extension = pathinfo($url, PATHINFO_EXTENSION);
-            if(preg_match('/^(jpg|jpeg|png|gif|bmp)$/i',$extension,$matches)){
+            if(preg_match('/^(jpg|jpeg|png|gif|bmp)$/i',$extension,$matches) && (stripos($type,'image/png',0)===0||stripos($type,'image/jpeg',0)===0||stripos($type,'image/jpg',0)===0||stripos($type,'image/gif',0)===0||stripos($type,'image/bmp',0)===0) ){
                 $resource = fopen($path . $_COOKIE['id'].".".$extension, 'w');
                 fwrite($resource, $img);
                 fclose($resource);
