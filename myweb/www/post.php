@@ -33,7 +33,7 @@ if($login){
         }
     }
     catch (Exception $e) {
-        echo 'Caught exception: ', str_replace(">","&gt",str_replace("<","&lt",$e->getMessage())), '<br>';
+        echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
         echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
     }
     echo '</body>';
@@ -76,8 +76,8 @@ function show($post,$token){
                 }
             }
             </script>';
-            echo "<h1><img src='".str_replace(">","&gt",str_replace("<","&lt",$row['img']))."' style='height: 50px; '>";
-            echo str_replace(">","&gt",str_replace("<","&lt",$row['username']))."<br>";
+            echo "<h1><img src='".str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$row['img'])))."' style='height: 50px; '>";
+            echo str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$row['username'])))."<br>";
             if($post['user_id'] == $_COOKIE['id']){
                 echo '<button onclick="deletepost()"> 刪除 </button></h1><br>';
             }
@@ -94,7 +94,7 @@ function show($post,$token){
         }
     }
     catch (Exception $e) {
-        echo 'Caught exception: ', str_replace(">","&gt",str_replace("<","&lt",$e->getMessage())), '<br>';
+        echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
         echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
     }
 }
