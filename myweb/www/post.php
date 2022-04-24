@@ -33,7 +33,7 @@ if($login){
         }
     }
     catch (Exception $e) {
-        echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
+        echo 'Caught exception: ', str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$e->getMessage()))), '<br>';
         echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
     }
     echo '</body>';
@@ -45,7 +45,7 @@ function CSRFtokenGenerator($len = 16){
     for($i=0;$i<$len;$i++){
         $token .= $characters[rand(0, strlen($characters) - 1)];
     }
-    header("Set-Cookie: CSRF_token=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
+    header("Set-Cookie: CSRF_token_del=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
     return $token;
 }
 
@@ -76,8 +76,8 @@ function show($post,$token){
                 }
             }
             </script>';
-            echo "<h1><img src='".str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$row['img'])))."' style='height: 50px; '>";
-            echo str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$row['username'])))."<br>";
+            echo "<h1><img src='".str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$row['img'])))."' style='height: 50px; '>";
+            echo str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$row['username'])))."<br>";
             if($post['user_id'] == $_COOKIE['id']){
                 echo '<button onclick="deletepost()"> 刪除 </button></h1><br>';
             }
@@ -94,7 +94,7 @@ function show($post,$token){
         }
     }
     catch (Exception $e) {
-        echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
+        echo 'Caught exception: ', str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$e->getMessage()))), '<br>';
         echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
     }
 }
@@ -130,6 +130,10 @@ function RecursiveBBcode($doc,$text,$start,$tag,$para){
     }
     else if($tag=="color"){
         $node = $doc->createElement("span");
+        if(!preg_match('/^#([a-z]|[0-9])*$/i',$para,$matches) && !preg_match('/^[a-z]*$/i',$para,$matches)){
+            $para = " ";
+        }
+        $para = str_replace("("," ",str_replace(":"," ",str_replace(";"," ",$para)));
         $node->setAttribute('style', "color: ".$para.";");
     }
     else{
