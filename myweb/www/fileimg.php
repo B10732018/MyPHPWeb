@@ -2,14 +2,17 @@
 require_once('checklogin.php');
 if($login){
     $post_token = $_POST['token'];
-    if($post_token != $_COOKIE['CSRF_token']){
-        echo " <script   language = 'javascript' 
-        type = 'text/javascript'> "; 
-        echo " top.location.href = 'chat.php' "; 
-        echo " </script > "; 
+    if($post_token != $_COOKIE['CSRF_token_img']){
+        echo "CSRF_token don't match";
+        echo '<script>
+                function prepage(){
+                    window.location.href="chat.php"
+                }
+                </script>
+                <button onclick="prepage()"> 上一頁 </button><br>';
         exit;
     }else{
-        echo "file: ".str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$_FILES['img']['name'])))."<br>";
+        echo "file: ".str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$_FILES['img']['name'])))."<br>";
 
         if ($_FILES['img']['error'] === UPLOAD_ERR_OK){
             $path = './images/';
@@ -25,7 +28,7 @@ if($login){
                 
                 if($stmt->execute()){
                     echo "上傳成功<br>";
-                    echo "<img src='".str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$dis)))."' style='height: 300px; '>";
+                    echo "<img src='".str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$dis)))."' style='height: 300px; '>";
                 }
                 else{
                     echo "sql error";
