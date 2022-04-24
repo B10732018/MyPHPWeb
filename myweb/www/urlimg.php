@@ -2,11 +2,13 @@
 require_once('checklogin.php');
 if($login){
     $post_token = $_POST['token'];
-    if($post_token != $_COOKIE['CSRF_token']){
-        echo " <script   language = 'javascript' 
-        type = 'text/javascript'> "; 
-        echo " top.location.href = 'chat.php' "; 
-        echo " </script > "; 
+    if($post_token != $_COOKIE['CSRF_token_img']){
+        echo '<script>
+                function prepage(){
+                    window.location.href="chat.php"
+                }
+                </script>
+                <button onclick="prepage()"> 上一頁 </button><br>';
         exit;
     }else{
         $url = $_POST['url'];
