@@ -15,11 +15,14 @@ if($login){
     if($row['admin']==1){
         if( !(!isset($_POST['title']) || $_POST['title']=="") ){
             $post_token = $_POST['token'];
-            if($post_token != $_COOKIE['CSRF_token']){
-                echo " <script   language = 'javascript' 
-                type = 'text/javascript'> "; 
-                echo " top.location.href = 'chat.php' "; 
-                echo " </script > "; 
+            if($post_token != $_COOKIE['CSRF_token_admin']){
+                echo "CSRF_token don't match"; 
+                echo '<script>
+                function prepage(){
+                    window.location.href="chat.php"
+                }
+                </script>
+                <button onclick="prepage()"> 上一頁 </button><br>';
                 exit;
             }
             else{
@@ -37,7 +40,7 @@ if($login){
         }
     }
     else{
-        header("Location: chat.php");
+        echo "no permission"; 
         exit;
     }
 
@@ -58,7 +61,7 @@ function CSRFtokenGenerator($len = 16){
     for($i=0;$i<$len;$i++){
         $token .= $characters[rand(0, strlen($characters) - 1)];
     }
-    header("Set-Cookie: CSRF_token=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
+    header("Set-Cookie: CSRF_token_admin=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
     return $token;
 }
 
