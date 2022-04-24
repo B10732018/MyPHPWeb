@@ -26,7 +26,7 @@ if($_COOKIE['username'] && $_COOKIE['password']){
             }
         }
         catch (Exception $e) {
-            echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
+            echo 'Caught exception: ', str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$e->getMessage()))), '<br>';
             echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
         }
     }
