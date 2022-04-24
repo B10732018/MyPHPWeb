@@ -4,11 +4,14 @@ if($login){
     $id = $_GET['id'];
     $token = $_GET['token'];
 
-    if($token != $_COOKIE['CSRF_token']){
-        echo " <script   language = 'javascript' 
-        type = 'text/javascript'> "; 
-        echo " top.location.href = 'chat.php' "; 
-        echo " </script > "; 
+    if( ($token != $_COOKIE['CSRF_token_del']) && $token != $_COOKIE['CSRF_token_chat'] ){
+        echo "CSRF_token don't match";
+        echo '<script>
+                function prepage(){
+                    window.location.href="chat.php"
+                }
+                </script>
+                <button onclick="prepage()"> 上一頁 </button><br>';
         exit;
     }
     else{
@@ -29,7 +32,7 @@ if($login){
             }
         }
         catch (Exception $e) {
-            echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
+            echo 'Caught exception: ', str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$e->getMessage()))), '<br>';
             echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
         }
     }
@@ -68,7 +71,7 @@ function deletepost($post){
         }
     }
     catch (Exception $e) {
-        echo 'Caught exception: ', str_replace("&","&amp;",str_replace(">","&gt",str_replace("<","&lt",$e->getMessage()))), '<br>';
+        echo 'Caught exception: ', str_replace("<","&lt",str_replace(">","&gt",str_replace("&","&amp;",$e->getMessage()))), '<br>';
         echo 'Check credentials in config file at: ', $Mysql_config_location, '\n';
     }
 }
