@@ -26,7 +26,7 @@ function CSRFtokenGenerator($len = 16){
     for($i=0;$i<$len;$i++){
         $token .= $characters[rand(0, strlen($characters) - 1)];
     }
-    header("Set-Cookie: CSRF_token=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
+    header("Set-Cookie: CSRF_token_img=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
     return $token;
 }
 ?>
