@@ -4,7 +4,7 @@ if($login){
     $id = $_GET['id'];
     $token = $_GET['token'];
 
-    if( ($token != $_COOKIE['CSRF_token_del']) && $token != $_COOKIE['CSRF_token_chat'] ){
+    if($token != $_COOKIE['CSRF_token']){
         echo "CSRF_token don't match";
         echo '<script>
                 function prepage(){
