@@ -2,7 +2,8 @@
 require_once('checklogin.php');
 if($login){
     $post_token = $_POST['token'];
-    if($post_token != $_COOKIE['CSRF_token_img']){
+    if($post_token != $_COOKIE['CSRF_token']){
+        echo "CSRF_token don't match";
         echo '<script>
                 function prepage(){
                     window.location.href="chat.php"
