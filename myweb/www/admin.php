@@ -15,7 +15,7 @@ if($login){
     if($row['admin']==1){
         if( !(!isset($_POST['title']) || $_POST['title']=="") ){
             $post_token = $_POST['token'];
-            if($post_token != $_COOKIE['CSRF_token_admin']){
+            if($post_token != $_COOKIE['CSRF_token']){
                 echo "CSRF_token don't match"; 
                 echo '<script>
                 function prepage(){
@@ -56,12 +56,22 @@ if($login){
 }
 
 function CSRFtokenGenerator($len = 16){
+    $date=new DateTime();
+    if(strtotime($date->format('Y-m-d H:i:s'))-$_COOKIE['CSRF_refresh_time']<0){
+        return $_COOKIE['CSRF_token'];
+    }
+
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $token = '';
     for($i=0;$i<$len;$i++){
         $token .= $characters[rand(0, strlen($characters) - 1)];
     }
-    header("Set-Cookie: CSRF_token_admin=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
+    header("Set-Cookie: CSRF_token=".urlencode($token)."; HttpOnly; Secure; SameSite=strict", false);
+
+    $date=new DateTime();
+    $rdate = strtotime($date->format('Y-m-d H:i:s'))+60;
+    header("Set-Cookie: CSRF_refresh_time=".urlencode($rdate)."; HttpOnly; Secure; SameSite=strict", false);
+
     return $token;
 }
 
