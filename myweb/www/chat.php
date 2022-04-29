@@ -26,7 +26,13 @@ if($login){
     if($row['admin']==1){
         echo '<button onclick="adminpage()"> 管理頁面 </button>';
     }
-    echo '<button onclick="logout()"> 登出 </button></h1><br>';
+    echo '<button onclick="logout()"> 登出 </button></h1><br>
+    <script>
+    function logout(){
+        window.location.href="logout.php?token='.$token.'"
+    }
+    </script>
+    ';
     
     echo '
     <h4>留言</h4>
@@ -45,7 +51,7 @@ if($login){
             echo "CSRF_token don't match"; 
             echo '<script>
             function logout(){
-                window.location.href="logout.php"
+                window.location.href="logout.php?token='.$token.'"
             }
             
             function uploadimg(){
@@ -174,10 +180,6 @@ function CSRFtokenGenerator($len = 16){
 ?>
 
 <script>
-function logout(){
-    window.location.href="logout.php"
-}
-
 function uploadimg(){
     window.location.href="uploadimg.php"
 }
