@@ -1,3 +1,7 @@
+# MyPHPWeb
+- files和images的權限是757
+- nginx.conf -> client_max_body_size 20M
+
 # 部屬 SQL injection LAB
 
 ## 安裝 docker 
